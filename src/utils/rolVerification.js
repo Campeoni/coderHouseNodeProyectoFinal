@@ -11,11 +11,10 @@ export const roleVerification = (roles) => {
       if (!req.user) {
           return res.status(401).send({ error: "User no autorizado" })
       }
-      roles.forEach(rolEnviado => {
-          if (userAccess.rol != rolEnviado) { //El user no tiene el rol necesario a esta ruta y a este rol
-              return bandera = 1              
-          }
-      });
+      
+      if (!roles.includes(userAccess.rol)){
+        return bandera = 1              
+      }
 
       if (bandera == 1) {
           return res.status(401).send({ error: "User no posee los permisos necesarios" })
