@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import { Command } from 'commander'
 import { environment as dicEnvironment} from '../utils/dictionary.js'
+import { __dirname } from "../path.js";
 
 const program = new Command()
 
@@ -18,7 +19,7 @@ dotenv.config({
 })
 console.log("Estas usando el ambiente : ", process.env.AMBIENTE);
 
-export default {
+export const env = {
   environment: process.env.AMBIENTE,
   port: process.env.PORT,
   urlMongoDb: process.env.URLMONGODB,
@@ -32,4 +33,16 @@ export default {
   clientIdGoogle: process.env.CLIENT_ID_GOOGLE,
   clientSecretGoogle: process.env.CLIENT_SECRET_GOOGLE,
   mailPass: process.env.MAIL_PASS
+}
+
+
+export const swaggerOptions = {
+  definition: {
+      openapi: '3.0.1',
+      info: {
+          title: "Documentacion Carrito CoderHouse",
+          description: "carrito online para practica de Coderhouse"
+      }
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`] //donde esta mis documentos 
 }

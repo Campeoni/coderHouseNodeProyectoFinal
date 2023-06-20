@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer' 
-import config from "../config/config.js"
+import {env} from "../config/config.js"
 
 // Define las constantes necesarias para el servidor de correo
 export const transporter = nodemailer.createTransport({// genero la forma de enviar informacion
@@ -7,7 +7,7 @@ export const transporter = nodemailer.createTransport({// genero la forma de env
   port: 465,
   auth:{
     user:'nicolas.campeoni.dev@gmail.com',
-    pass: config.mailPass,
+    pass: env.mailPass,
     authMethod: 'LOGIN'
   }
 })

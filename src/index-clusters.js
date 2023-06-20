@@ -1,4 +1,4 @@
-import config from "./config/config.js"
+import {env} from "./config/config.js"
 import express from "express";
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose';
@@ -29,6 +29,6 @@ if (cluster.isPrimary) {
     }
 
 } else {
-    console.log(`Hola, soy un subproceso con el id ${process.pid}`)
+    console.log(`Hola, soy un subproceso con el id ${env.process.pid}`)
     //cluster.fork() No puedo generar un subproceso a traves de un subproceso
 }

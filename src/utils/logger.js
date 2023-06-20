@@ -1,5 +1,5 @@
 import winston from "winston"
-import config from "../config/config.js"
+import {env} from "../config/config.js"
 
 const customLevelOpt = {
   levels: {
@@ -37,7 +37,7 @@ const debugHttpInfoFilter = winston.format((info, opts) => {
 
 //Filtros para capturar desarrollo
 const devFilter = winston.format((info, opts) => {
-  if (config.environment === 'desarrollo') {
+  if (env.environment === 'desarrollo') {
     return info  
   } else {
     return false;    
@@ -46,7 +46,7 @@ const devFilter = winston.format((info, opts) => {
 
 //Filtros para capturar produccion
 const prdFilter = winston.format((info, opts) => {
-  if (config.environment === 'produccion') {
+  if (env.environment === 'produccion') {
     return info  
   } else {
     return false;    
