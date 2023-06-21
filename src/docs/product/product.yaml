@@ -1,0 +1,262 @@
+components:  
+  schemas:
+    product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: "Id autogenerado"
+        title:
+          type: String
+          description: "Titulo del producto"
+        description:
+          type: String
+          description: "Descripcion del producto"
+        price:
+          type: Number
+          description: "Precio del producto"
+        code:
+          type: String
+          description: "Codigo interno del producto"
+        status:
+          type: Boolean
+          description: "estado del producto"
+        stock:
+          type: Number
+          description: "cantidad de productos existentes para el producto"
+        category:
+          type: String
+          description: "Categoria a la cual corresponde el articulo"
+        thumnail:
+          type: Array
+          description: "Imagenes del artiiculo"
+      example:
+        _id: "12bb12bb12bb12bb12bb12bb"
+        title: "remara sun"
+        description: "remera de algodon con estampo de un sol"
+        price: 1250
+        code: "r1aaaa"
+        status: true
+        stock: 6
+        category: "Remera"
+        thumnail: ["img1.jpg", "img2.jpg"]
+    
+    PaginateProducts:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la respuesta
+        payload:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+          description: Lista de productos
+        totalPages:
+          type: integer
+          description: Número total de páginas
+        prevPage:
+          type: integer
+          nullable: true
+          description: Página anterior
+        nextPage:
+          type: integer
+          nullable: true
+          description: Página siguiente
+        page:
+          type: integer
+          description: Página actual
+        hasPrevPage:
+          type: boolean
+          nullable: true
+          description: Indicador de existencia de página anterior
+        hasNextPage:
+          type: boolean
+          nullable: true
+          description: Indicador de existencia de página siguiente
+        prevLink:
+          type: string
+          nullable: true
+          description: Enlace a la página anterior
+        nextLink:
+          type: string
+          nullable: true
+          description: Enlace a la página siguiente
+      example:
+        status: "success"
+        payload:
+          - _id: "12bb12bb12bb12bb12bb12bb"
+            title: "Artefacto"
+            description: "Un artefacto de gran poder"
+            code: "ZZ999"
+            price: 1000
+            status: true
+            stock: 30
+            category: armas
+            thumbnails: ["/img/artefacto.png"]
+        totalPages: 1
+        prevPage: null
+        nextPage: null
+        page: 1
+        hasPrevPage: null
+        hasNextPage: null
+        prevLink: null
+        nextLink: null
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwtCookies
+      description: Incluir el token JWT como una cookie llamada "jwtCookies"
+
+paths:
+  /api/products:
+    get:
+      summary: "Consulta todos los productos"
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Cantidad máxima de productos por página
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Número de página actual
+        - in: query
+          name: sort
+          schema:
+            type: string
+            default: ""
+          description: >
+            Campo para ordenar los productos por el precio.
+            Si el valor se deja vacío, los productos no se ordenan.
+            Si el valor es "asc", los productos se ordenan de menor a mayor.
+            Si el valor es "desc", los productos se ordenan de mayor a menor.
+        - in: query
+          name: category
+          schema:
+            type: string
+            default: ""
+          description: Categoría de los productos
+      responses:
+        '200':
+          description: Productos encontrados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginateProducts"
+        '400':
+          description: Error al encontrar los productos
+        '500':
+          description: Error del servidor
+    post:
+      summary: Crear un nuevo producto (Admin)
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - code
+                - price
+                - status
+                - stock
+                - category  
+                - thumbnails          
+              properties:
+                title:
+                  type: string
+                  description: Título del producto
+                description:
+                  type: string
+                  description: Descripción del producto
+                code:
+                  type: string
+                  description: Código del producto
+                price:
+                  type: number
+                  description: Precio del producto
+                status:
+                  type: boolean
+                  description: Estado del producto
+                stock:
+                  type: integer
+                  description: Cantidad en stock del producto
+                category:
+                  type: string
+                  description: Categoría del producto
+                thumbnails:
+                  type: array
+                  items:
+                    type: string
+                  description: Lista de enlaces a las imágenes en miniatura  
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: "Producto creado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/product"
+        "400":
+          description: "Error al crear el producto"
+        "401":
+          description: "No hay sesion activa"
+        "500":
+          description: "Error del servidor"
+  /api/products/{pid}:
+    get:  
+      summary: "Consultar un producto"
+      tags:
+        - products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: "Id del producto"
+        schema: 
+          $type: String      
+      responses:
+        "200":
+          description: "Producto encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/product"
+    delete:  
+      summary: "Elimina un producto por ID (Admin)"
+      tags:
+        - products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: "Id del producto"
+        schema: 
+          $type: String   
+      security:
+        - cookieAuth: []             
+      responses:
+        "200":
+          description: "Producto eliminado"
+        "400":
+          description: "Error al eliminar el producto"
+        "401":
+          description: "No hay sesion activa"
+        "500":
+          description: "Error del servidor"
+
+

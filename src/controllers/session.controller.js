@@ -1,7 +1,7 @@
 import { findUserByEmail, updatePassword } from '../services/userService.js'  //export instance of the user.controller class
 import { createHash,validatePassword } from '../utils/bcrypt.js'
 import { generateTokenRestorePass,generateToken } from '../utils/jwt.js'
-import config from "../config/config.js"
+import {env} from "../config/config.js"
 import {transporter} from "../utils/mail.js"
 
 
@@ -81,7 +81,7 @@ export const recoverPasswordEmail = async (req, res) => {
 
   // * User email found
     //const resetLink = await generatePasswordResetLink(user, req, res)
-    const resetLink = `http://localhost:${config.port || 5000}/recoverChangePassword`
+    const resetLink = `http://localhost:${env.port || 5000}/recoverChangePassword`
 
     const mailToSend = {
       from: 'no-reply',

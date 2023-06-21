@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import config from '../config/config.js'
+import {env} from '../config/config.js'
 
 export const createHash = (password) => {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(config.salt)))
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(env.salt)))
 }
 
 export const validatePassword = (password, storedPassword) => {

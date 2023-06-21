@@ -3,13 +3,13 @@ import { findUserByEmail, createUser } from '../../services/userService.js';
 import { createCart } from '../../services/cartService.js';
 import { createHash } from '../../utils/bcrypt.js'
 import { generateToken } from '../../utils/jwt.js'
-import config from "../../config/config.js"
+import {env} from "../../config/config.js"
 
 
 const githubOptions = {
-  clientID: config.clientIdGoogle,
-  clientSecret: config.clientSecretGoogle,
-  callbackURL: `http://localhost:${config.port}/authGoogle/googleSession`,
+  clientID: env.clientIdGoogle,
+  clientSecret: env.clientSecretGoogle,
+  callbackURL: `http://localhost:${env.port}/authGoogle/googleSession`,
   scope: ['profile','email'] // scope: se solicita acceso al correo electrónico del usuario autenticado en GitHub. 
 }
 

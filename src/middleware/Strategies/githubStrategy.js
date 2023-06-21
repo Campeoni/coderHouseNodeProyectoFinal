@@ -3,13 +3,13 @@ import { findUserByEmail, createUser } from '../../services/userService.js';
 import { createCart } from '../../services/cartService.js';
 import { createHash } from '../../utils/bcrypt.js'
 import { generateToken } from '../../utils/jwt.js'
-import config from "../../config/config.js"
+import {env} from "../../config/config.js"
 
 
 const githubOptions = {
-  clientID: config.clientIdGithub,
-  clientSecret: config.clientSecretGithub,
-  callbackURL: `http://localhost:${config.port}/authGithub/githubSession`,
+  clientID: env.clientIdGithub,
+  clientSecret: env.clientSecretGithub,
+  callbackURL: `http://localhost:${env.port}/authGithub/githubSession`,
   scope: ['profile','email'] // scope: se solicita acceso al correo electrónico del usuario autenticado en GitHub. 
 }
 

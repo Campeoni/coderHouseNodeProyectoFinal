@@ -1,4 +1,4 @@
-import config from "./config/config.js"
+import {env,swaggerOptions} from "./config/config.js"
 import express from "express";
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose';
@@ -15,6 +15,8 @@ import { engine } from 'express-handlebars';
 import {findMessages, updateMessage} from './services/messageService.js'
 import {findUserByEmail} from './services/userService.js'
 import { addLogger } from './utils/logger.js'
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express'
 
 
 const app = express(); 
@@ -22,11 +24,12 @@ const app = express();
 // Define los middleware para la aplicación
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //Permite realizar consultas en la URL (req.query)
-app.use(cookieParser(config.cookieSecret))
+app.use(cookieParser(env.cookieSecret))
+
 
 //session
 app.use(session({  
-  secret: config.sessionSecret,
+  secret: env.sessionSecret,
   resave: true,
   saveUninitialized: true
 }))
@@ -38,7 +41,7 @@ initializePassport(passport)
 
 //MONGOOSE (set and connection)
 const connectionMongoose = async () => {
-  await mongoose.connect(config.urlMongoDb, {
+  await mongoose.connect(env.urlMongoDb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -52,8 +55,12 @@ connectionMongoose()
 //Routers
 app.use('/', routers)
 
+
 //Public folder
 app.use('/', express.static(__dirname + '/public'))
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(errorHandler); 
 
@@ -79,7 +86,7 @@ app.use((req, res, next)=> {
 });
 
 // Configura el puerto del servidor y lo inicia
-app.set ("port", config.port || 5000)
+app.set ("port", env.port || 5000)
 
 const server = app.listen(app.get("port"), () => {
   console.log(`Server on port ${app.get("port")}`)
