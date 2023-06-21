@@ -240,6 +240,8 @@ paths:
                 quantity:
                   type: string
                   description: Nueva cantidad del producto
+      security:
+        - cookieAuth: []                     
       responses:
         "200":
           description: "Cantidad actualizada"
@@ -284,11 +286,18 @@ paths:
         "500":
           description: "Error del servidor"
 
-  /api/carts/purchase:
-    get:
+  /api/carts/{cid}/purchase:
+    post:
       summary: "Genera el Ticket de la compra con los productos del carrito (User)"
       tags:
         - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: "Id del carrito"
+        schema: 
+          $type: String
       responses:
         "200":
           description: "Ticket generado, el carrito vuelve a estar vacío"
