@@ -1,10 +1,10 @@
 components:  
   schemas:
-    product:
+    Product:
       type: object
       properties:
         _id:
-          type: ObjectId
+          type: Objectid
           description: "Id autogenerado"
         title:
           type: String
@@ -27,7 +27,7 @@ components:
         category:
           type: String
           description: "Categoria a la cual corresponde el articulo"
-        thumnail:
+        thumbnail:
           type: Array
           description: "Imagenes del artiiculo"
       example:
@@ -39,8 +39,7 @@ components:
         status: true
         stock: 6
         category: "Remera"
-        thumnail: ["img1.jpg", "img2.jpg"]
-    
+        thumbnail: ["img1.jpg", "img2.jpg"]    
     PaginateProducts:
       type: object
       properties:
@@ -85,15 +84,15 @@ components:
       example:
         status: "success"
         payload:
-          - _id: "12bb12bb12bb12bb12bb12bb"
-            title: "Artefacto"
-            description: "Un artefacto de gran poder"
-            code: "ZZ999"
-            price: 1000
-            status: true
-            stock: 30
-            category: armas
-            thumbnails: ["/img/artefacto.png"]
+          _id: "12bb12bb12bb12bb12bb12bb"
+          title: "remara sun"
+          description: "remera de algodon"
+          code: "r1aaaa"
+          price: 1250
+          status: true
+          stock: 30
+          category: remera
+          thumbnails: ["img1.jpg", "img2.jpg"] 
         totalPages: 1
         prevPage: null
         nextPage: null
@@ -140,21 +139,21 @@ paths:
             Si el valor es "asc", los productos se ordenan de menor a mayor.
             Si el valor es "desc", los productos se ordenan de mayor a menor.
         - in: query
-          name: category
+          name: query
           schema:
             type: string
             default: ""
           description: Categoría de los productos
       responses:
-        '200':
+        "200":
           description: Productos encontrados
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PaginateProducts"
-        '400':
+        "400":
           description: Error al encontrar los productos
-        '500':
+        "500":
           description: Error del servidor
     post:
       summary: Crear un nuevo producto (Admin)
@@ -210,7 +209,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/product"
+                $ref: "#/components/schemas/Product"
         "400":
           description: "Error al crear el producto"
         "401":
@@ -221,7 +220,7 @@ paths:
     get:  
       summary: "Consultar un producto"
       tags:
-        - products
+        - Products
       parameters:
       - name: pid
         in: path
@@ -235,11 +234,70 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/product"
+                $ref: "#/components/schemas/Product"
+    put:
+      summary: "Busca un producto por el Id y lo modifica con la nueva informacion proporcionada por el body (Admin)"
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: "Id del producto solicitado"
+          schema: 
+            $type: String      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título del producto
+                description:
+                  type: string
+                  description: Descripción del producto
+                code:
+                  type: string
+                  description: Código del producto
+                price:
+                  type: number
+                  description: Precio del producto
+                status:
+                  type: boolean
+                  description: Estado del producto
+                stock:
+                  type: integer
+                  description: Cantidad en stock del producto
+                category:
+                  type: string
+                  description: Categoría del producto
+                thumbnails:
+                  type: array
+                  items:
+                    type: string
+                  description: Lista de enlaces a las imágenes en miniatura
+      security:
+        - cookieAuth: []               
+      responses:
+        "200":
+          description: Producto actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Error al actualizar el producto
+        "401":
+          description: No hay sesion activa
+        "500":
+          description: Error del servidor    
     delete:  
       summary: "Elimina un producto por ID (Admin)"
       tags:
-        - products
+        - Products
       parameters:
       - name: pid
         in: path
