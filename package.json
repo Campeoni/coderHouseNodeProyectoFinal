@@ -6,16 +6,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js --mode dev",
-    "prd": "nodemon src/index.js --mode prd"
+    "prd": "nodemon src/index.js --mode prd",
+    "testsessions": "mocha test/sessions.test.js",
+    "testproducts": "mocha test/products.test.js",
+    "testcarts": "mocha test/carts.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.0.1",
     "commander": "^10.0.1",
     "connect-mongo": "^5.0.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.7",
@@ -37,6 +41,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "nodemon": "^2.0.20"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nodemon": "^1.14.9",
+    "supertest": "^6.3.3"
   }
 }

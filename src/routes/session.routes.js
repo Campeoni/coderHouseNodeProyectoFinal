@@ -18,7 +18,7 @@ routerUser.put("/changePass", changePass);
 
 routerUser.get('/recoverPasswordEmail/:email',recoverPasswordEmail )
 
-routerUser.get("/current",passportMessage("jwt"),roleVerification([roles.user]),
+routerUser.get("/current",passportMessage("jwt"),
   (req, res) => {
     res.send(req.user);
   }

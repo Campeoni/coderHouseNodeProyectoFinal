@@ -119,9 +119,7 @@ io.on("connection", async (socket)=> {
   socket.on("mailValidation",async(email) => {
     const answer = await findUserByEmail(email) 
     socket.emit("answerMailValidation", answer)
-  
   })
-
 })
 
 

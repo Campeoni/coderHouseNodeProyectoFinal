@@ -13,7 +13,7 @@ export const roleVerification = (roles) => {
       }
       
       if (!roles.includes(userAccess.rol)){
-        return bandera = 1              
+        bandera = 1              
       }
 
       if (bandera == 1) {
