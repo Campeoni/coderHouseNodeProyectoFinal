@@ -1,4 +1,4 @@
-import { findUserByEmail, updatePassword } from '../services/userService.js'  //export instance of the user.controller class
+import { findUserByEmail, updatePassword, updateUser } from '../services/userService.js'  //export instance of the user.controller class
 import { createHash,validatePassword } from '../utils/bcrypt.js'
 import { generateTokenRestorePass,generateToken } from '../utils/jwt.js'
 import {env} from "../config/config.js"
@@ -39,6 +39,12 @@ export const testLogin = async (req,res) => {
       req.session.login = true
       req.session.userFirst = user.firstname
       req.session.rol = user.rol
+
+      const fechaHora = new Date();
+      fechaHora.setHours(fechaHora.getHours() - 3);      
+      const fechaHoraGMT = fechaHora.getTime();
+
+      await updateUser(user._doc._id,{ lastConnection: fechaHoraGMT } )
       const token = generateToken(user)
 
       return res

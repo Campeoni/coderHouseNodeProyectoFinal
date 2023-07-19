@@ -47,3 +47,12 @@ export const updatePassword = async (uid, password) => {
     }
 } 
 
+export const updateUser = async (id, info) => {
+    try {
+        const user = await userModel.findByIdAndUpdate(id, info, {new: true});
+        await user.save()
+        return user
+    } catch (error) {
+        throw new Error(error);
+    }
+}
