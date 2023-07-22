@@ -62,7 +62,10 @@ export const strategyLogin =  new LocalStrategy({
       const user = await findUserByEmail(username)
 
       if (!user) { //Usuario no encontrado
-        return done(null, false)
+/*         const internalError = new Error('Usuario invalido');
+              internalError.codigo = 500;  */
+
+        return done(null, user, "usuario no valido")
       }
       if (validatePassword(password, user.password)) { //Usuario y contraseña validos
         //console.log("nunca se esta devolviendo TOKEN, ver si queda")
@@ -70,7 +73,7 @@ export const strategyLogin =  new LocalStrategy({
         //console.log("TOKEN=", token)
         return done(null, user)
       }
-      return done(null, false) //Contraseña no valida
+      return done(null, user) //Contraseña no valida
 
     } catch (error) {
       return done(error)

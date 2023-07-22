@@ -2,6 +2,7 @@ import { paginateProducts, findProductById, createProduct, updateProduct, delete
 import CustomError from '../utils/erroresHandler/CustomError.js'
 import {EErrors} from '../utils/erroresHandler/enums.js'
 import {invalidSortErrorInfo, generateProductErrorInfo} from '../utils/erroresHandler/info.js'
+import {transporter} from "../utils/mail.js"
             
 export const getProducts = async (req, res, next) => {  //Recupera todos los productos. puede ser limitado si se informa por URL
   const ValidSort = ['asc', 'desc']
@@ -123,6 +124,21 @@ export const deleteProductCont = async (req, res) => { // Delete Product
   
   try {      
       const response = await deleteProductServ(pid)
+
+      oldUsers.forEach(user=>{
+        const mailToSend = {
+          from: 'no-reply',
+          to: user.email,
+          subject: 'Hasta la vista baby!',
+          html: `
+          <p>Muy buenas ${user.firstname},</p>
+          <p>Le comunicamos que su usuario ha sido dado de baja por pasar mas de 2 dias sin actividad</p>
+        
+          <p>Desde ya muchas gracias!</p>
+          `
+        }
+        transporter.sendMail(mailToSend)
+      })
 
       if (response) {
         res.status(200).json({

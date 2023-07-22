@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsers, uploadDocs} from "../controllers/user.controller.js";
+import { getUsers, uploadDocs, deleteInactiveUsers} from "../controllers/user.controller.js";
 import { passportMessage } from "../utils/passportMessage.js";
 import { uploader, tipoDoc } from "../utils/multer.js";
 
@@ -8,6 +8,7 @@ const routerUser = Router()
 
 routerUser.route("/")
   .get(getUsers)
+  .delete(deleteInactiveUsers)
 
 routerUser
   .post("/:uid/documents",

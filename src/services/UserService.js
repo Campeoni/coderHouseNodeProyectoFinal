@@ -56,3 +56,10 @@ export const updateUser = async (id, info) => {
         throw new Error(error);
     }
 }
+export const deleteManyUsers = async (filter) => {
+    try {
+        return await userModel.deleteMany(filter);        
+    } catch (error) {
+        throw new Error(error);
+    }
+}
