@@ -26,8 +26,8 @@ export const strategyGoogle = new GoogleStrategy(githubOptions, async (accessTok
       const passwordHash = createHash('coder123')
       const idCart = await createCart()
       const userCreated = await createUser({
-        firstname: profile._json.given_name,
-        lastname: profile._json.family_name,
+        first_name: profile._json.given_name,
+        last_name: profile._json.family_name,
         email: profile.emails[0].value,
         password: passwordHash, //Contraseña por default ya que no puedo accder a la contraseña de github
         idCart: idCart.id

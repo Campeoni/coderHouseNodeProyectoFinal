@@ -41,7 +41,7 @@ export const deleteInactiveUsers = async (req, res) => { // Delete Product
           to: user.email,
           subject: 'Hasta la vista baby!',
           html: `
-          <p>Muy buenas ${user.firstname},</p>
+          <p>Muy buenas ${user.first_name},</p>
           <p>Le comunicamos que su usuario ha sido dado de baja por pasar mas de 2 dias sin actividad</p>
         
           <p>Desde ya muchas gracias!</p>

@@ -22,7 +22,7 @@ export const postCart = async (req, res) => {  //Inserta un nuevo carrito
 
 export const getCart = async (req, res) => {//recupera el carrito especificado
   try {
-    const cid = req.params.cid    
+    const cid = req.user.user.idCart    
 
     let cart = await findCartById(cid);
         cart = await cart.populate('products.productId')
@@ -42,7 +42,7 @@ export const getCart = async (req, res) => {//recupera el carrito especificado
 
 export const deleteProductsCart = async (req, res) => {  //Vacia el carrito
   try {
-    const cid = req.params.cid
+    const cid = req.user.user.idCart 
     let answer = await deleteProducts(cid);
     res.status(200).json(answer); 
   
@@ -55,7 +55,7 @@ export const deleteProductsCart = async (req, res) => {  //Vacia el carrito
 
 export const putProductsCart = async (req, res) => {  // pisa todo el carrit con los productos enviados
   try {
-    const cid = req.params.cid
+    const cid = req.user.user.idCart 
     const products = req.body
     let answer = await updateProductsCart(cid, products);
     res.status(200).json(answer); 
@@ -69,7 +69,7 @@ export const putProductsCart = async (req, res) => {  // pisa todo el carrit con
 }
 
 export const addProductInCart = async (req, res, next) => {  //Inserta nuevos producto al carrito especificado
-  const cid = req.params.cid
+  const cid = req.user.user.idCart 
   const pid = req.params.pid
 
   try {
@@ -116,7 +116,7 @@ export const addProductInCart = async (req, res, next) => {  //Inserta nuevos pr
 }
 
 export const putQuantityProduct = async (req, res, next) => {  //Modifica cantidades de un producto
-  const cid = req.params.cid
+  const cid = req.user.user.idCart 
   const pid = req.params.pid
   const { quantity } = req.body
 
@@ -156,7 +156,7 @@ export const putQuantityProduct = async (req, res, next) => {  //Modifica cantid
 }
 
 export const deleteProductCart = async (req, res) => {  //Elimina productos del carrito especificado
-  const cid = req.params.cid
+  const cid = req.user.user.idCart 
   const pid = req.params.pid
 
   try {
@@ -211,7 +211,7 @@ export const getTicketByCode = async (req, res) => {  //Recupera todos los produ
 }
 
 export const purchaseCart = async (req, res) => { //Inserta nuevo producto
-  const cid = req.params.cid
+  const cid = req.user.user.idCart 
   const mail = req.user.user.email  
   
   // Iniciar una transacción (sirve para poder hacer rollback en caso de falla)

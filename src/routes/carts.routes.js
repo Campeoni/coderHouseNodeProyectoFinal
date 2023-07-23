@@ -9,18 +9,18 @@ const routerCarts = Router()
 
 routerCarts.post("/",postCart);
 
-routerCarts.route("/:cid") 
-  .get(getCart)
-  .delete(deleteProductsCart)
-  .put(putProductsCart)
+routerCarts.route("/") 
+  .get(passportMessage('jwt'),getCart)
+  .delete(passportMessage('jwt'),deleteProductsCart)
+  .put(passportMessage('jwt'),putProductsCart)
 
-routerCarts.route("/:cid/products/:pid")
-  .post(passportMessage('jwt'),roleVerification([roles.user]), addProductInCart)
-  .put(passportMessage('jwt'),roleVerification([roles.user]), putQuantityProduct)
-  .delete(deleteProductCart)
+routerCarts.route("/product/:pid")
+  .post(passportMessage('jwt'),roleVerification([roles.admin]), addProductInCart)
+  .put(passportMessage('jwt'),roleVerification([roles.admin]), putQuantityProduct)
+  .delete(passportMessage('jwt'),deleteProductCart)
 
   
-routerCarts.route("/:cid/purchase")
-  .post(passportMessage('jwt'),roleVerification([roles.user]), purchaseCart)
+routerCarts.route("/purchase")
+  .post(passportMessage('jwt'),roleVerification([roles.admin]), purchaseCart)
 
 export default routerCarts

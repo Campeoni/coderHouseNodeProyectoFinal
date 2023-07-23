@@ -1,5 +1,5 @@
-const firstName = document.getElementById("firstName")
-const lastName  = document.getElementById("lastName")
+const first_name = document.getElementById("first_name")
+const last_name  = document.getElementById("last_name")
 const email     = document.getElementById("email")
 const password  = document.getElementById("password")
 
@@ -14,8 +14,8 @@ const registerUser = () => {
 
   const User = {}
 
-  User.firstname  = firstName.value
-  User.lastname   = lastName.value
+  User.first_name  = first_name.value
+  User.last_name   = last_name.value
   User.email      = email.value
   User.password   = password.value
 

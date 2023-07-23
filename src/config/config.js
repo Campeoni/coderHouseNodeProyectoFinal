@@ -46,3 +46,9 @@ export const swaggerOptions = {
   },
   apis: [`${__dirname}/docs/**/*.yaml`] //donde esta mis documentos 
 }
+
+
+export const cookiesTime = {
+  jwt: 24 * 60 * 60 * 1000, // 1 día en milisegundos
+  RestorePass: 60 * 60 * 1000 // 1 hora
+}

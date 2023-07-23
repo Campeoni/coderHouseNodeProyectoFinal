@@ -21,7 +21,7 @@ describe("Testing de las rutas de products", () => {
         const tokenResult = response.headers['set-cookie'][0]
 
         //Verifica que exista la token en la respuesta
-        expect(tokenResult).to.be.ok
+        expect(response.status).to.equal(200)
 
         token = {
             name: tokenResult.split("=")[0],

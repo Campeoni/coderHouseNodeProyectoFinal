@@ -16,13 +16,13 @@ export const strategyRegister = new LocalStrategy({
     usernameField: 'email'
   }, async (req, username, password, done) => {
     //Validar y crear Usuario
-    const { firstname, lastname, email } = req.body    
+    const { first_name, last_name, email } = req.body    
     
     try {
-      if(!firstname || !lastname || !email)  {
+      if(!first_name || !last_name || !email)  {
         CustomError.createError({
           name: "User creation error",
-          cause: generateUserErrorInfo({firstname, lastname, email}),
+          cause: generateUserErrorInfo({first_name, last_name, email}),
           message: "Error Trying create User",
           code: EErrors.INVALID_TYPES_ERROR
         })
@@ -35,12 +35,17 @@ export const strategyRegister = new LocalStrategy({
       const passwordHash = createHash(password)
       const idCart = await createCart()
       
+      const fechaHora = new Date();
+      fechaHora.setHours(fechaHora.getHours() - 3);      
+      const fechaHoraGMT = fechaHora.getTime();
+      
       const userCreated = await createUser({
-        firstname: firstname,
-        lastname: lastname,        
+        first_name: first_name,
+        last_name: last_name,        
         email: email,
         password: passwordHash, 
-        idCart: idCart.id
+        idCart: idCart.id, 
+        lastConnection: fechaHoraGMT 
       })      
       
       //console.log("nunca se esta devolviendo TOKEN, ver si queda")

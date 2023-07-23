@@ -1,7 +1,7 @@
 import { findUserByEmail, updatePassword, updateUser } from '../services/userService.js'  //export instance of the user.controller class
 import { createHash,validatePassword } from '../utils/bcrypt.js'
 import { generateTokenRestorePass,generateToken } from '../utils/jwt.js'
-import {env} from "../config/config.js"
+import {env, cookiesTime} from "../config/config.js"
 import {transporter} from "../utils/mail.js"
 import {jwtReader } from '../utils/jwt.js'
 
@@ -15,7 +15,7 @@ export const getSession = (req,res) => {
         sessionData.name= req.session.userFirst
         sessionData.rol= req.session.rol
       } else {
-        sessionData.name= req.session.user.firstname
+        sessionData.name= req.session.user.first_name
         sessionData.rol= req.session.user.rol      
       }
       return sessionData
@@ -37,7 +37,7 @@ export const testLogin = async (req,res) => {
 
     if (user && validatePassword(password, user.password)) {
       req.session.login = true
-      req.session.userFirst = user.firstname
+      req.session.userFirst = user.first_name
       req.session.rol = user.rol
 
       const fechaHora = new Date();
@@ -48,7 +48,7 @@ export const testLogin = async (req,res) => {
       const token = generateToken(user)
 
       return res
-        .cookie('jwtCookies',token,{maxAge: 30000 , httpOnly: true} ) // setea la cookie
+        .cookie('jwtCookies',token,{maxAge: cookiesTime.jwt , httpOnly: true} ) // setea la cookie
         .status(200)
         .json({token})//muestra el token
 
@@ -86,7 +86,7 @@ export const recoverPasswordEmail = async (req, res) => {
       to: email,
       subject: 'Password reset link',
       html: `
-      <p>Muy buenas ${user.firstname},</p>
+      <p>Muy buenas ${user.first_name},</p>
       <p>Si deseas reestablecer la contraseña haz click <a href="${resetLink}">en el siguiente link</a> para reestablecer tu contraseña:</p>
     
       <p>Si no solicitaste un cambio de contraseña, ignora este email.</p>`
@@ -96,11 +96,11 @@ export const recoverPasswordEmail = async (req, res) => {
     req.logger.info(`Password reset link sent to ${email}`)
     const token = generateTokenRestorePass(email)
 
-    const oneHour = 60 * 60 * 1000; // 1 hora en milisegundos
+    ; // 1 hora en milisegundos
 
     return res
       .status(200)
-      .cookie('jwtCookiesRestorePass',token,{maxAge: oneHour  , httpOnly: true} )
+      .cookie('jwtCookiesRestorePass',token,{maxAge: cookiesTime.RestorePass  , httpOnly: true} )
       .clearCookie('booleanTimeOut')
       .json({
           status: 'success',
@@ -151,7 +151,7 @@ export const destroySession = (req, res) => {
     const token = jwtReader(jwtCookies)
 
     if(token) {
-      res.clearCookie('jwt');
+      res.clearCookie('jwtCookies');
       res.status(200).send({status: "success", message: 'Sesión cerrada exitosamente' });
     } else {
       return res.status(401).send({status: "error", message: 'Token no válida' });

@@ -12,8 +12,8 @@ describe("Testing de las rutas de sessions", () => {
   //REGISTER
   it("Ruta: api/session/register con el metodo POST", async function () {
     const newUser = {
-        firstname: "Test",
-        lastname: "Session",
+        first_name: "Test",
+        last_name: "Session",
         email: "test@session.com",
         password: "testsession"
     }

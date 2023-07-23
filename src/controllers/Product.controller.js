@@ -30,14 +30,11 @@ export const getProducts = async (req, res, next) => {  //Recupera todos los pro
         ? sortOption = "price"
         : sortOption = "-price"
   
-    } else if (sort !== undefined) {
-      CustomError.createError({
-        name: "invalid parameter",
-        cause: invalidSortErrorInfo(sort),
-        message: "invalid parameter in sort",
-        code: EErrors.ROUTING_ERROR
-      })
-    }
+    } else{
+        sortOption = "price"
+      }
+      
+    
 
     const products = await paginateProducts(filter, options);
     const queryLink = query ? `&query=${query}` : ""
@@ -124,21 +121,6 @@ export const deleteProductCont = async (req, res) => { // Delete Product
   
   try {      
       const response = await deleteProductServ(pid)
-
-      oldUsers.forEach(user=>{
-        const mailToSend = {
-          from: 'no-reply',
-          to: user.email,
-          subject: 'Hasta la vista baby!',
-          html: `
-          <p>Muy buenas ${user.firstname},</p>
-          <p>Le comunicamos que su usuario ha sido dado de baja por pasar mas de 2 dias sin actividad</p>
-        
-          <p>Desde ya muchas gracias!</p>
-          `
-        }
-        transporter.sendMail(mailToSend)
-      })
 
       if (response) {
         res.status(200).json({

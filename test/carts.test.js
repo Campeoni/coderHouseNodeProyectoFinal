@@ -14,8 +14,8 @@ describe("Testing de las rutas de carts", () => {
   //REGISTER
     it("Ruta: api/session/register con el metodo POST", async function () {
         const newUser = {
-            firstname: "Test",
-            lastname: "user",
+            first_name: "Test",
+            last_name: "user",
             email: "test@user.com",
             password: "testuser"
         }

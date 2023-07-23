@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from 'passport'
 import { generateToken } from '../utils/jwt.js'
+import {cookiesTime} from "../config/config.js"
 
 /// "/authGoogle"
 const routerGoogle = Router()
@@ -18,7 +19,7 @@ routerGoogle.get('/googleSession', passport.authenticate('google'), async (req, 
     req.session.login = true
     const token = req.authInfo.token
     res
-    .cookie('jwtCookies',token,{maxAge: 30000})
+    .cookie('jwtCookies',token,{maxAge: cookiesTime.jwt})
     .redirect('/api/products')
   } else {
       res.redirect('/login')

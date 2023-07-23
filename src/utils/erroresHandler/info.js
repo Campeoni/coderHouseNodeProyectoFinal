@@ -1,8 +1,8 @@
 export const generateUserErrorInfo = (user) => {
   return `One or more propierties were incomplete or not valid.
   List of requiered properties:
-  * firstname : needs to be a String, received ${user.firstname}
-  * lastname  : needs to be a String, received ${user.lastname}
+  * first_name : needs to be a String, received ${user.first_name}
+  * last_name  : needs to be a String, received ${user.last_name}
   * email     : needs to be a String, received ${user.email}`
 }
 export const generateProductErrorInfo = (product) => {
