@@ -64,22 +64,6 @@ app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(errorHandler); 
 
-/* app.get('/email', async (req,res)=>{
-  await transporter.sendMail({
-    from:'Test coder nicolas.cammpeoni.dev@gmail.com',
-    //to: "franciscopugh01@gmail.com",
-    to: "nicolas.campeoni@gmail.com",
-    subject: "probando",
-    html:`
-    <div>
-      este es un mail de prueba
-    </div>
-    `,
-    attachments: []
-  })
-  res.send("email enviado")
-})
- */
 //if a URL is invalid display a message
 app.use((req, res, next)=> {
   res.status(404).send({error:'Lo siento, no se pudo encontrar la página que estás buscando.'});
