@@ -3,7 +3,7 @@ import { strategyRegister, strategyLogin } from './Strategies/localStrategy.js'
 import { strategyJWT } from './Strategies/jwtStrategy.js'
 import { strategyGithub } from './Strategies/githubStrategy.js'
 import { strategyGoogle } from './Strategies/googleStrategy.js'
-import { findUserById } from '../services/userServices.js';
+import { findUserById } from '../services/userService.js';
 
 
 const initializePassport = () => {

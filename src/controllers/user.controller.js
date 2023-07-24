@@ -1,4 +1,4 @@
-import { findUsers, findUserById, updateUser, deleteManyUsers } from '../services/userServices.js';
+import { findUsers, findUserById, updateUser, deleteManyUsers } from '../services/userService.js';
 import {transporter} from "../utils/mail.js"
 
 export const getUsers = async (req, res) => {

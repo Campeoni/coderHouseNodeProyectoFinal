@@ -13,7 +13,7 @@ import {Server} from "socket.io";
 import * as path from 'path'
 import { engine } from 'express-handlebars';
 import {findMessages, updateMessage} from './services/messageService.js'
-import {findUserByEmail} from './services/userServices.js'
+import {findUserByEmail} from './services/userService.js'
 import { addLogger } from './utils/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express'
