@@ -32,7 +32,7 @@ export const env = {
   clientSecretGithub: process.env.CLIENT_SECRET_GITHUB,
   clientIdGoogle: process.env.CLIENT_ID_GOOGLE,
   clientSecretGoogle: process.env.CLIENT_SECRET_GOOGLE,
-  mail: process.env.MAIL,
+  mailUser: process.env.MAIL_USER,
   mailPass: process.env.MAIL_PASS
 }
 
