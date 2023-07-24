@@ -5,7 +5,6 @@ import { createHash, validatePassword } from '../../utils/bcrypt.js'
 import CustomError from '../../utils/erroresHandler/CustomError.js'
 import {EErrors} from '../../utils/erroresHandler/enums.js'
 import {generateUserErrorInfo} from '../../utils/erroresHandler/info.js'
-import { generateToken } from '../../utils/jwt.js'
 
 //Passport se va a manejar como si fuera un middleware 
 const LocalStrategy = local.Strategy //Estretagia local de autenticacion
