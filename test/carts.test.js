@@ -70,37 +70,37 @@ describe("Testing de las rutas de carts", () => {
         //Verifica que exista la token en la respuesta
         expect(response.status).to.equal(200)
 
-        cartId =  response.body.user.idCart
+        cartId =  response.body.idCart
         //Comprueba que el status es 200
         expect(response.body).to.be.ok;
     })
 
     //Ingresa un producto al carrito por el Id 2
-    it("Ruta: api/carts/cid/product/pid con el metodo POST", async function () {
+    it("Ruta: api/carts/product/pid con el metodo POST", async function () {
         const cid = cartId
         const pid = "64168ea7ec39e0132293a814"
 
         await requester
-            .post(`/api/carts/${cid}/products/${pid}`)
+            .post(`/api/carts/product/${pid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         const { _body, status } = await requester
-            .post(`/api/carts/${cid}/products/${pid}`)
+            .post(`/api/carts/product/${pid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
         expect(status).to.equal(200);
 
         console.log("Agregar el mismo producto 2 veces")
-        console.log(`producto: ${_body.products[0].productId}`)
+        console.log(`producto: ${_body.products}`)
     })    
 
     //Obtiene el carrito con el array de productos vacío
-    it("Ruta: api/carts/cid con el metodo GET", async function () {
+    it("Ruta: api/carts con el metodo GET", async function () {
         const cid = cartId
 
         const { _body, status } = await requester
-            .get(`/api/carts/${cid}`)
+            .get(`/api/carts`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
@@ -111,9 +111,7 @@ describe("Testing de las rutas de carts", () => {
     })
 
     //Actualiza los productos del carrito con un array
-    it("Ruta: api/carts/cid con el metodo PUT", async function () {
-        const cid = cartId
-
+    it("Ruta: api/carts con el metodo PUT", async function () {
         const products = [
             {
                 productId: "6417ebfce3d8a5fce3779b7b",
@@ -134,7 +132,7 @@ describe("Testing de las rutas de carts", () => {
         ]
 
         const { _body, status } = await requester
-            .put(`/api/carts/${cid}`)
+            .put(`/api/carts`)
             .send(products)
             .set('Cookie', [`${token.name}=${token.value}`])
 
@@ -152,7 +150,7 @@ describe("Testing de las rutas de carts", () => {
         const newQuantity = { quantity: "5" }
 
         const { _body, status } = await requester
-            .put(`/api/carts/${cid}/products/${pid}`)
+            .put(`/api/carts/product/${pid}`)
             .send(newQuantity)
             .set('Cookie', [`${token.name}=${token.value}`])
 
@@ -170,12 +168,12 @@ describe("Testing de las rutas de carts", () => {
         const newQuantity = { quantity: "99999999" }
 
         const { _body, status } = await requester
-            .put(`/api/carts/${cid}/products/${pid}`)
+            .put(`/api/carts/product/${pid}`)
             .send(newQuantity)
             .set('Cookie', [`${token.name}=${token.value}`])
 
-        //Comprueba que el status es 200
-        expect(status).to.equal(200);
+        //Comprueba que el status es <> 500
+        expect(status).to.equal(500);
 
         console.log("Ruta para actualizar la cantidad sin suficiente stock")
         console.log("Status:", JSON.stringify(_body, null, 2)) 

@@ -177,8 +177,7 @@ export const deleteProductCart = async (req, res) => {  //Elimina productos del 
         res.status(200).send("El producto no existe en el carrito");
       }    
   } catch (error) {
-    res.status(500)
-    return (error).json({
+    res.status(500).json({
       message: error.message
     })
   }
