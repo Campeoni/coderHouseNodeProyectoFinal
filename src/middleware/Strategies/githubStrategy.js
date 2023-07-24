@@ -1,5 +1,5 @@
 import GitHubStrategy from 'passport-github2'
-import { findUserByEmail, createUser } from '../../services/userService.js';
+import { findUserByEmail, createUser } from '../../services/userServices.js';
 import { createCart } from '../../services/cartService.js';
 import { createHash } from '../../utils/bcrypt.js'
 import { generateToken } from '../../utils/jwt.js'

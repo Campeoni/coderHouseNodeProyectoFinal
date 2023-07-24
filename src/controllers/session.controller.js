@@ -1,4 +1,4 @@
-import { findUserByEmail, updatePassword, updateUser } from '../services/userService.js'  //export instance of the user.controller class
+import { findUserByEmail, updatePassword, updateUser } from '../services/userServices.js'  //export instance of the user.controller class
 import { createHash,validatePassword } from '../utils/bcrypt.js'
 import { generateTokenRestorePass,generateToken } from '../utils/jwt.js'
 import {env} from "../config/config.js"

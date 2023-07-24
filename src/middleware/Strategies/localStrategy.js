@@ -1,5 +1,5 @@
 import local from 'passport-local'
-import { findUserByEmail, createUser } from '../../services/userService.js';
+import { findUserByEmail, createUser } from '../../services/userServices.js';
 import { createCart } from '../../services/cartService.js';
 import { createHash, validatePassword } from '../../utils/bcrypt.js'
 import CustomError from '../../utils/erroresHandler/CustomError.js'
