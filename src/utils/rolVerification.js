@@ -2,10 +2,10 @@ export const roleVerification = (roles) => {
   return async (req, res, next) => {    
     let bandera = 0
     let userAccess = {}
-    if (req.user.user[0]) {
-      userAccess = req.user.user[0]
+    if (req.user[0]) {
+      userAccess = req.user[0]
     } else{
-      userAccess = req.user.user
+      userAccess = req.user
     }
 
       if (!req.user) {

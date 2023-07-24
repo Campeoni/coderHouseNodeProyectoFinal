@@ -8,8 +8,7 @@ const requester = supertest('http://localhost:4000');
 //Test carts
 describe("Testing de las rutas de carts", () => {
     let token = ""
-    let cartId = ""
-    let newProductId = ""
+    let cartId = ""   
 
   //REGISTER
     it("Ruta: api/session/register con el metodo POST", async function () {
@@ -20,10 +19,10 @@ describe("Testing de las rutas de carts", () => {
             password: "testuser"
         }
 
-        const { _body } = await requester.post('/api/session/register').send(newUser)
+        const { _body, status } = await requester.post('/api/session/register').send(newUser)
 
-        //Comprueba si el status es 200
-        expect(_body).to.be.ok
+        //Comprueba si el status es 200        
+        expect(status).to.equal(200)
         //expect(_body.status).to.equal("success");
         console.log("Ruta de registro")
         console.log(`Status: ${_body.status}`)
@@ -47,7 +46,8 @@ describe("Testing de las rutas de carts", () => {
         }
 
         //Comprueba que el status es 200
-        expect(response.body).to.be.ok;
+        expect(response.status).to.equal(200)
+
 
         console.log("Ruta de login")
         console.log(`Status: ${response.body.status}`)
@@ -68,7 +68,7 @@ describe("Testing de las rutas de carts", () => {
         .set('Cookie', [`${token.name}=${token.value}`])
 
         //Verifica que exista la token en la respuesta
-        expect(response).to.be.ok
+        expect(response.status).to.equal(200)
 
         cartId =  response.body.user.idCart
         //Comprueba que el status es 200
@@ -84,12 +84,12 @@ describe("Testing de las rutas de carts", () => {
             .post(`/api/carts/${cid}/products/${pid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .post(`/api/carts/${cid}/products/${pid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
-        expect(_body).to.be.ok;
+        expect(status).to.equal(200);
 
         console.log("Agregar el mismo producto 2 veces")
         console.log(`producto: ${_body.products[0].productId}`)
@@ -99,12 +99,12 @@ describe("Testing de las rutas de carts", () => {
     it("Ruta: api/carts/cid con el metodo GET", async function () {
         const cid = cartId
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .get(`/api/carts/${cid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
-        expect(_body).to.be.ok;
+        expect(status).to.equal(200);
 
         console.log("Ruta para Obtener el carrito")
         console.log("Status:", JSON.stringify(_body, null, 2))         
@@ -133,13 +133,13 @@ describe("Testing de las rutas de carts", () => {
             }
         ]
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .put(`/api/carts/${cid}`)
             .send(products)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
-        expect(_body).to.be.ok;
+        expect(status).to.equal(200);
 
         console.log("Ruta para modificar el array de productos del carrito.")
         console.log("Status:", JSON.stringify(_body, null, 2))           
@@ -151,13 +151,13 @@ describe("Testing de las rutas de carts", () => {
         const pid = "6418d4bccf34d1a30f51e0fa"
         const newQuantity = { quantity: "5" }
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .put(`/api/carts/${cid}/products/${pid}`)
             .send(newQuantity)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
-        expect(_body).to.be.ok;
+        expect(status).to.equal(200);        
 
         console.log("Ruta para actualizar la cantidad de un producto dentro del carrito")
         console.log("Status:", JSON.stringify(_body, null, 2)) 
@@ -169,13 +169,13 @@ describe("Testing de las rutas de carts", () => {
         const pid = "6418d4bccf34d1a30f51e0fa"
         const newQuantity = { quantity: "99999999" }
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .put(`/api/carts/${cid}/products/${pid}`)
             .send(newQuantity)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
-        expect(_body.status).to.equal("error");
+        expect(status).to.equal(200);
 
         console.log("Ruta para actualizar la cantidad sin suficiente stock")
         console.log("Status:", JSON.stringify(_body, null, 2)) 

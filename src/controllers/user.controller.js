@@ -91,7 +91,7 @@ export const uploadDocs = async (req, res, next) => {
 
       req.logger.info(`
       <UPLOAD>
-      user email: ${req.user.user.email} 
+      user email: ${req.user.email} 
       user id:    ${userID}
       file name:  ${files.originalname}
       file type:  ${files.mimetype}
@@ -99,7 +99,7 @@ export const uploadDocs = async (req, res, next) => {
       file path:  ${files.path}
       -------------------------EOF------------------------`)
 
-      res.status(201).send(`File '${files.originalname}' uploaded succesfully by '${req.user.user.email}'`)
+      res.status(201).send(`File '${files.originalname}' uploaded succesfully by '${req.user.email}'`)
 
   } catch (error) {
       res.status(500).send(error)

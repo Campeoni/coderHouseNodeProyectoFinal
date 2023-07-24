@@ -20,68 +20,64 @@ describe("Testing de las rutas de products", () => {
         const response = await requester.post('/api/session/login').send(newUser)
         const tokenResult = response.headers['set-cookie'][0]
 
-        //Verifica que exista la token en la respuesta
-        expect(response.status).to.equal(200)
-
         token = {
             name: tokenResult.split("=")[0],
             value: tokenResult.split("=")[1],
         }
 
         //Comprueba que el status es 200
-        expect(response.status).to.be.ok;
-
+        expect(response.status).to.equal(200)
+        
         console.log("Ruta de login")
         console.log(`Status: ${response.status}`)
-
+        
         //Verifica el nombre y el valor de la Token
         expect(token.name).to.be.ok.and.equal('jwtCookies')
         expect(token.value).to.be.ok
-
+        
         console.log(`Token: ${token.name} = ${token.value}`)
     })
-
+    
     //Get Products
     it("Ruta: api/products con el metodo GET", async function () {
         const limit = 3;
-
-        const { _body } = await requester
-            .get('/api/products')
-            .query({ limit });
-
+        
+        const { _body, status } = await requester
+        .get('/api/products')
+        .query({ limit });
+        
+        
         //Comprueba que el status es 200
-        expect(_body.status).to.equal("Success");
-
+        expect(status).to.equal(200);        
+        
         //Comprueba que el limit funciona cambiando el default
         expect(_body.payload.length).to.equal(limit);
-
+        
         console.log("Ruta de Productos")
-        console.log(`Status: ${_body.status}`)
         console.log(`Se han recibido ${limit} productos.`)
         console.log("Paginated Products:", JSON.stringify(_body, null, 2))
     })
-
-    //Create Invalid Product 
-
-    it("Ruta: api/products con el metodo POST", async function () {
+    
+    //Create Invalid Product     
+    it("Ruta: api/products con el metodo POST invalido", async function () {
         const newProduct = {
             title: "Test",
             description: "Producto de prueba invalido"
         }
-
-        const { _body } = await requester
-            .post('/api/products')
-            .send(newProduct)
-            .set('Cookie', [`${token.name}=${token.value}`])
-
-        //Comprueba que el status es 200
-        expect(_body.status).to.equal("error");
+        
+        const { _body, status } = await requester
+        .post('/api/products')
+        .send(newProduct)
+        .set('Cookie', [`${token.name}=${token.value}`])
+        
+        //Comprueba que el status es <> 200
+        expect(status).to.equal(500)
 
         console.log("Ruta de Creacion de producto (invalido)")
-        console.log(`Status: ${_body.status}`)
+        console.log(`Status: ${status}`)
         console.log(`Message: ${_body.message}`)
     }) 
-
+    
     //Create Product
     it("Ruta: api/products con el metodo POST", async function () {
         const newProduct = {
@@ -92,35 +88,41 @@ describe("Testing de las rutas de products", () => {
             stock: 999,
             category: "categoria prueba",
         }
-
-        const { _body } = await requester
-            .post('/api/products')
-            .send(newProduct)
-            .set('Cookie', [`${token.name}=${token.value}`])
-
+        
+        const { _body, status } = await requester
+        .post('/api/products')
+        .send(newProduct)
+        .set('Cookie', [`${token.name}=${token.value}`])
+        
         //Comprueba que el status es 200
+        expect(status).to.equal(200)
         expect(_body.status).to.equal(true);
-
+        expect(_body.title).to.equal( "Producto test");
+        expect(_body.description).to.equal( "descripcion producto 9999");
+        expect(_body.price).to.equal(1999.9) ;
+        expect(_body.code).to.equal( "ttt999");
+        expect(_body.stock).to.equal( 999);
+        expect(_body.category).to.equal( "categoria prueba");
+        
         newProductId = _body._id
-
+        
         console.log("Ruta de Creacion de producto")
         console.log(`Status: ${_body.status}`)
         console.log(`Message: ${_body.message}`)
         console.log("Product:", JSON.stringify(_body.payload, null, 2))
     })
-
+    
     //Get Product (id)
     it("Ruta: api/products con el metodo GET", async function () {
         const pid = newProductId;
-
-        const { _body } = await requester.get(`/api/products/${pid}`)
-
+        
+        const { _body, status } = await requester.get(`/api/products/${pid}`)
+        
         //Comprueba que el status es 200
-        expect(_body.status).to.equal(true);
+        expect(status).to.equal(200)        
 
-        console.log("Ruta de Producto por Id")
-        console.log(`Status: ${_body.status}`)
-        console.log(`Message: ${_body.message}`)
+        console.log("Ruta de Producto por Id")        
+        console.log(`Message: ${_body}`)
 
     })
 
@@ -132,12 +134,13 @@ describe("Testing de las rutas de products", () => {
             title: "Test actualizado",
         }
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .put(`/api/products/${pid}`)
             .send(info)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
+        expect(status).to.equal(200);
         expect(_body.status).to.equal(true);
 
         console.log("Ruta de Actualizar producto")
@@ -150,11 +153,12 @@ describe("Testing de las rutas de products", () => {
     it("Ruta: api/products/pid con el metodo DELETE", async function () {
         const pid = newProductId;
 
-        const { _body } = await requester
+        const { _body, status } = await requester
             .delete(`/api/products/${pid}`)
             .set('Cookie', [`${token.name}=${token.value}`])
 
         //Comprueba que el status es 200
+        expect(status).to.equal(200);
         expect(_body.delete).to.equal(true);
 
         console.log("Ruta de Eliminar producto")

@@ -1,7 +1,8 @@
 import { findUserByEmail, updatePassword, updateUser } from '../services/userService.js'  //export instance of the user.controller class
 import { createHash,validatePassword } from '../utils/bcrypt.js'
 import { generateTokenRestorePass,generateToken } from '../utils/jwt.js'
-import {env, cookiesTime} from "../config/config.js"
+import {env} from "../config/config.js"
+import {cookiesTime} from "../utils/dictionary.js"
 import {transporter} from "../utils/mail.js"
 import {jwtReader } from '../utils/jwt.js'
 

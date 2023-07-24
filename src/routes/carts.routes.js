@@ -7,7 +7,7 @@ import { roles } from "../utils/dictionary.js";
 // "/api/carts"
 const routerCarts = Router()
 
-routerCarts.post("/",postCart);
+//routerCarts.post("/",postCart);
 
 routerCarts.route("/") 
   .get(passportMessage('jwt'),getCart)
@@ -15,12 +15,12 @@ routerCarts.route("/")
   .put(passportMessage('jwt'),putProductsCart)
 
 routerCarts.route("/product/:pid")
-  .post(passportMessage('jwt'),roleVerification([roles.admin]), addProductInCart)
-  .put(passportMessage('jwt'),roleVerification([roles.admin]), putQuantityProduct)
+  .post(passportMessage('jwt'),roleVerification([roles.user]), addProductInCart)
+  .put(passportMessage('jwt'),roleVerification([roles.user]), putQuantityProduct)
   .delete(passportMessage('jwt'),deleteProductCart)
 
   
 routerCarts.route("/purchase")
-  .post(passportMessage('jwt'),roleVerification([roles.admin]), purchaseCart)
+  .post(passportMessage('jwt'),roleVerification([roles.user]), purchaseCart)
 
 export default routerCarts

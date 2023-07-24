@@ -4,7 +4,7 @@ import {EErrors} from '../utils/erroresHandler/enums.js'
 import {invalidSortErrorInfo, generateProductErrorInfo} from '../utils/erroresHandler/info.js'
 import {transporter} from "../utils/mail.js"
             
-export const getProducts = async (req, res, next) => {  //Recupera todos los productos. puede ser limitado si se informa por URL
+export const getProducts = async (req, res) => {  //Recupera todos los productos. puede ser limitado si se informa por URL
   const ValidSort = ['asc', 'desc']
 
   let { limit , page, query, sort } = req.query;
@@ -59,11 +59,11 @@ export const getProducts = async (req, res, next) => {  //Recupera todos los pro
     res.status(200).json(response)
 
   } catch (error) {
-    next(error)
+    res.status(500).json({message: error.message})
   }
 }
 
-export const postProduct = async (req, res, next) => { //Inserta nuevo producto
+export const postProduct = async (req, res) => { //Inserta nuevo producto
   const product = req.body  
   try {      
       if(!product.title || !product.description || !product.price || !product.code || !product.stock || !product.category)  {
@@ -78,7 +78,7 @@ export const postProduct = async (req, res, next) => { //Inserta nuevo producto
       res.status(200).json(response)
       
   } catch (error) {
-    next(error)
+    res.status(500).json({message: error.message})
   }
 }
 

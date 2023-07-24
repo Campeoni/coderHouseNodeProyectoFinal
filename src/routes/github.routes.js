@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from 'passport'
 import { generateToken } from '../utils/jwt.js'
-import {cookiesTime} from "../config/config.js"
+import {cookiesTime} from "../utils/dictionary.js"
 
 /// "/authGithub"
 const routerGithub = Router()

@@ -12,7 +12,7 @@ export const passportMessage = (strategy) =>{ //valida con JSONWebToken
         return res.status(401).send({error: info.message ? info.message : info.toString()})
       }
       
-      req.user = user //Si todo salio bien seteo el usuario 
+      req.user = user.user //Si todo salio bien seteo el usuario 
       return next()
 
     }) (req, res, next)

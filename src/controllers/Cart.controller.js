@@ -22,7 +22,7 @@ export const postCart = async (req, res) => {  //Inserta un nuevo carrito
 
 export const getCart = async (req, res) => {//recupera el carrito especificado
   try {
-    const cid = req.user.user.idCart    
+    const cid = req.user.idCart    
 
     let cart = await findCartById(cid);
         cart = await cart.populate('products.productId')
@@ -42,7 +42,7 @@ export const getCart = async (req, res) => {//recupera el carrito especificado
 
 export const deleteProductsCart = async (req, res) => {  //Vacia el carrito
   try {
-    const cid = req.user.user.idCart 
+    const cid = req.user.idCart 
     let answer = await deleteProducts(cid);
     res.status(200).json(answer); 
   
@@ -55,7 +55,7 @@ export const deleteProductsCart = async (req, res) => {  //Vacia el carrito
 
 export const putProductsCart = async (req, res) => {  // pisa todo el carrit con los productos enviados
   try {
-    const cid = req.user.user.idCart 
+    const cid = req.user.idCart 
     const products = req.body
     let answer = await updateProductsCart(cid, products);
     res.status(200).json(answer); 
@@ -68,8 +68,8 @@ export const putProductsCart = async (req, res) => {  // pisa todo el carrit con
   }
 }
 
-export const addProductInCart = async (req, res, next) => {  //Inserta nuevos producto al carrito especificado
-  const cid = req.user.user.idCart 
+export const addProductInCart = async (req, res) => {  //Inserta nuevos producto al carrito especificado
+  const cid = req.user.idCart 
   const pid = req.params.pid
 
   try {
@@ -111,12 +111,14 @@ export const addProductInCart = async (req, res, next) => {  //Inserta nuevos pr
         throw new Error("Producto no existe")     
       }      
   } catch (error) {
-      next(error)
+    res.status(500).json({
+      message: error.message
+    }) 
   }
 }
 
 export const putQuantityProduct = async (req, res, next) => {  //Modifica cantidades de un producto
-  const cid = req.user.user.idCart 
+  const cid = req.user.idCart 
   const pid = req.params.pid
   const { quantity } = req.body
 
@@ -151,12 +153,14 @@ export const putQuantityProduct = async (req, res, next) => {  //Modifica cantid
       res.status(200).send(cart.products); 
   
     } catch (error) {
-      next(error)      
+      res.status(500).json({
+        message: error.message
+      })      
     }
 }
 
 export const deleteProductCart = async (req, res) => {  //Elimina productos del carrito especificado
-  const cid = req.user.user.idCart 
+  const cid = req.user.idCart 
   const pid = req.params.pid
 
   try {
@@ -211,13 +215,13 @@ export const getTicketByCode = async (req, res) => {  //Recupera todos los produ
 }
 
 export const purchaseCart = async (req, res) => { //Inserta nuevo producto
-  const cid = req.user.user.idCart 
-  const mail = req.user.user.email  
+  const cid = req.user.idCart 
+  const mail = req.user.email    
   
   // Iniciar una transacción (sirve para poder hacer rollback en caso de falla)
   const session = await mongoose.startSession();
-        await session.startTransaction();
-  
+                  await session.startTransaction();
+
   try {      
       let cart = await findCartById(cid);
           cart = await cart.populate('products.productId')
@@ -247,7 +251,7 @@ export const purchaseCart = async (req, res) => { //Inserta nuevo producto
       }
     
       let code = await findTicketMaxCode()
-      ticket.code = ++code
+      ticket.code = ++code 
       ticket.purchase_email = mail      
 
       await createTicket(ticket)
@@ -255,7 +259,7 @@ export const purchaseCart = async (req, res) => { //Inserta nuevo producto
       
       await session.commitTransaction();
       await session.endSession();
-      //res.status(200).json(cart.products)
+      
       return res.status(200).json(result)
       
   } catch (error) {
