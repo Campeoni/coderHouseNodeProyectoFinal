@@ -3,7 +3,7 @@ import { getUsers, uploadDocs, deleteInactiveUsers} from "../controllers/user.co
 import { passportMessage } from "../utils/passportMessage.js";
 import { uploader, tipoDoc } from "../utils/multer.js";
 
-// "/api/user"
+// "/api/users"
 const routerUser = Router()
 
 routerUser.route("/")
