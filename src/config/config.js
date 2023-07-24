@@ -15,7 +15,7 @@ const environment  = program.opts().mode
 console.log("ingreso el comando de ambiente: ", environment);
 
 dotenv.config({
-  path: environment === dicEnvironment.development ? "./.env.dev" : "./.env.prod"
+  path: environment === dicEnvironment.development ? "./.env.dev" : "./.env.prd"
 })
 console.log("Estas usando el ambiente : ", process.env.AMBIENTE);
 
