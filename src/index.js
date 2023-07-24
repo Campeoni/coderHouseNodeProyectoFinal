@@ -18,7 +18,7 @@ import { addLogger } from './utils/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express'
 
-
+//app express
 const app = express(); 
 
 // Define los middleware para la aplicación
