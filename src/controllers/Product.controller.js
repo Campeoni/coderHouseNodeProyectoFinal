@@ -1,18 +1,17 @@
 import { paginateProducts, findProductById, createProduct, updateProduct, deleteProductServ  } from "../services/productService.js";
 import CustomError from '../utils/erroresHandler/CustomError.js'
 import {EErrors} from '../utils/erroresHandler/enums.js'
-import {invalidSortErrorInfo, generateProductErrorInfo} from '../utils/erroresHandler/info.js'
-import {transporter} from "../utils/mail.js"
-            
+import {generateProductErrorInfo} from '../utils/erroresHandler/info.js'
+
 export const getProducts = async (req, res) => {  //Recupera todos los productos. puede ser limitado si se informa por URL
   const ValidSort = ['asc', 'desc']
 
-  let { limit , page, query, sort } = req.query;
+  let { limit , page, category, sort } = req.query;
   
   let sortOption = sort
 
   const filter = { stock: { $gt: 0 } } // Filtro Mongodb para traer productos con stock > 0
-  query && (filter.category = query)
+  category && (filter.category = category)
       
   limit || (limit = 10)  
   page  || (page  =  1)
@@ -32,12 +31,10 @@ export const getProducts = async (req, res) => {  //Recupera todos los productos
   
     } else{
         sortOption = "price"
-      }
-      
-    
+    }    
 
     const products = await paginateProducts(filter, options);
-    const queryLink = query ? `&query=${query}` : ""
+    const queryLink = category ? `&category=${category}` : ""
     const limitLink = limit ? `&limit=${limit}` : ""
     const sortLink = sort ? `&sort=${sort}` : ""
     const prevPageLink = products.hasPrevPage ? `?page=${products.prevPage}${limitLink}${queryLink}${sortLink}` : null
